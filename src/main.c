@@ -5,24 +5,27 @@
 #include "sizecallback.h"
 #include "input.h"
 #include "state.h"
+#include "util/types.h"
 
 struct State state;
 
 // Shader source code
 // TODO: move them
-const char *vertexShaderSource = "#version 330 core\n"
+static const char *vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-const char *fragmentShaderSource = "#version 330 core\n"
+static const char *fragmentShaderSource = "#version 330 core\n"
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
     "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\n\0";
+
+void _wireframe_mode(bool enabled);
 
 int main(void)
 {
@@ -120,14 +123,14 @@ int main(void)
     }
 
     // List of vertices for the rectangle
-    GLfloat vertices[] = {
+    static f32 vertices[] = {
         0.5f,  0.5f, 0.0f,  // top right
         0.5f, -0.5f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f,  // bottom left
         -0.5f,  0.5f, 0.0f   // top left
     };
 
-    GLuint indices[] = {
+    static u8 indices[] = {
         0, 1, 3,
         1, 2, 3
     };
@@ -155,15 +158,20 @@ int main(void)
     // Bind the vertex buffer (VBO)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    // Bind the VAO
     glBindVertexArray(0);
 
+    // Bind the IBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     // Set the initial window size OpenGL viewport
     glViewport(0, 0, 640, 480);
 
     // Set the framebuffer and the key callbacks
     glfwSetFramebufferSizeCallback(window, _size_callback);
     glfwSetKeyCallback(window, _key_callback);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Main loop aka. runtime
     while(!glfwWindowShouldClose(window))
@@ -183,16 +191,7 @@ int main(void)
             state.wireframe = !state.wireframe;
         }
         // Wireframe mode :3
-        switch (state.wireframe) {
-            case true:
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                break;
-            case false:
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                break;
-            default:
-                break;
-        }
+        _wireframe_mode(state.wireframe);
 
         // Use the program and bind the VAO
         glUseProgram(shaderProgram);
@@ -200,8 +199,6 @@ int main(void)
 
         // Draw call
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
 
         // Make the window not show up as not responding
         glfwPollEvents();
@@ -219,4 +216,13 @@ int main(void)
     glfwTerminate();
 
     return 0;
+}
+
+void _wireframe_mode(bool enabled) {
+    if (enabled) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 }
