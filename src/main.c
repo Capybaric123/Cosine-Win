@@ -130,7 +130,7 @@ int main(void)
         -0.5f,  0.5f, 0.0f   // top left
     };
 
-    static u8 indices[] = {
+    static u32 indices[] = {
         0, 1, 3,
         1, 2, 3
     };
