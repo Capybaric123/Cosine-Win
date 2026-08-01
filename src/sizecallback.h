@@ -6,6 +6,6 @@
 
 #include "log.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void _size_callback(GLFWwindow* window, int width, int height);
 
 #endif

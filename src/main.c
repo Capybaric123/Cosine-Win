@@ -2,8 +2,8 @@
 #include <GLFW/glfw3.h>
 
 #include "log.h"
-#include "fbSizeCallback.h"
-#include "processInput.h"
+#include "sizecallback.h"
+#include "input.h"
 #include "state.h"
 
 struct State state;
@@ -130,7 +130,7 @@ int main(void)
     };
 
     // Create the VAO and the VBO
-    unsigned int VBO, VAO;
+    GLuint VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
@@ -152,7 +152,7 @@ int main(void)
     glViewport(0, 0, 640, 480);
 
     // Set the framebuffer and the key callbacks
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, _size_callback);
     glfwSetKeyCallback(window, _key_callback);
 
     // Main loop aka. runtime
@@ -195,6 +195,9 @@ int main(void)
         // Swap the double buffers
         glfwSwapBuffers(window);
     }
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 
     // Destroy the window on exit
     glfwDestroyWindow(window);
