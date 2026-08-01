@@ -1,6 +1,6 @@
 # Cosine-Win
 
----
+<hr>
 
 A proper Windows version of so-called **_Cosine Engine_**, made specifically because most game engines are built on Windows.
 
@@ -8,7 +8,7 @@ For anyone wanting to contribute, first of all why? And second of all, sure just
 
 Current stats are:
 
----
+<hr>
 
 ```text
       93 text files.
