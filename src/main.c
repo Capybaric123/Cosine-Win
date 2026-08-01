@@ -4,6 +4,9 @@
 #include "log.h"
 #include "fbSizeCallback.h"
 #include "processInput.h"
+#include "state.h"
+
+struct State state;
 
 const char *vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
@@ -124,13 +127,29 @@ int main()
     glViewport(0, 0, 640, 480);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetKeyCallback(window, _key_callback);
 
     while(!glfwWindowShouldClose(window))
     {
         glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        processInput(window);
+        if (keyboard.keys[GLFW_KEY_ESCAPE].down == true) {
+            glfwSetWindowShouldClose(window, true);
+        }
+        if (keyboard.keys[GLFW_KEY_BACKSLASH].down == true) {
+            state.wireframe = !state.wireframe;
+        }
+        switch (state.wireframe) {
+            case true:
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                break;
+            case false:
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                break;
+            default:
+                break;
+        }
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);

@@ -1,10 +1,22 @@
 #include "processInput.h"
 
-void processInput(GLFWwindow* window)
+Keyboard keyboard;
+
+void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        log_trace("Shutdown call detected!");
-        glfwSetWindowShouldClose(window, 1);
+    if (key < 0) {
+        return;
     }
+
+    switch (action) {
+        case GLFW_PRESS:
+            keyboard.keys[key].down = true;
+            break;
+        case GLFW_RELEASE:
+            keyboard.keys[key].down = false;
+            break;
+        default:
+            break;
+    }
+
 }

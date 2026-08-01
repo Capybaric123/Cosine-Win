@@ -3,7 +3,9 @@
 
 struct State
 {
-    
+    _Bool wireframe;
 };
+
+extern struct State state;
 
 #endif
