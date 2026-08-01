@@ -1,0 +1,32 @@
+[
+{
+  "directory": "C:/dev/Cosine-Win/build",
+  "command": "C:\\Users\\danch\\scoop\\apps\\mingw-winlibs-llvm-msvcrt\\current\\bin\\gcc.exe -IC:/dev/Cosine-Win/include -o CMakeFiles\\Cosine.dir\\src\\fbSizeCallback.c.obj -c C:\\dev\\Cosine-Win\\src\\fbSizeCallback.c",
+  "file": "C:\\dev\\Cosine-Win\\src\\fbSizeCallback.c",
+  "output": "CMakeFiles\\Cosine.dir\\src\\fbSizeCallback.c.obj"
+},
+{
+  "directory": "C:/dev/Cosine-Win/build",
+  "command": "C:\\Users\\danch\\scoop\\apps\\mingw-winlibs-llvm-msvcrt\\current\\bin\\gcc.exe -IC:/dev/Cosine-Win/include -o CMakeFiles\\Cosine.dir\\src\\gl.c.obj -c C:\\dev\\Cosine-Win\\src\\gl.c",
+  "file": "C:\\dev\\Cosine-Win\\src\\gl.c",
+  "output": "CMakeFiles\\Cosine.dir\\src\\gl.c.obj"
+},
+{
+  "directory": "C:/dev/Cosine-Win/build",
+  "command": "C:\\Users\\danch\\scoop\\apps\\mingw-winlibs-llvm-msvcrt\\current\\bin\\gcc.exe -IC:/dev/Cosine-Win/include -o CMakeFiles\\Cosine.dir\\src\\log.c.obj -c C:\\dev\\Cosine-Win\\src\\log.c",
+  "file": "C:\\dev\\Cosine-Win\\src\\log.c",
+  "output": "CMakeFiles\\Cosine.dir\\src\\log.c.obj"
+},
+{
+  "directory": "C:/dev/Cosine-Win/build",
+  "command": "C:\\Users\\danch\\scoop\\apps\\mingw-winlibs-llvm-msvcrt\\current\\bin\\gcc.exe -IC:/dev/Cosine-Win/include -o CMakeFiles\\Cosine.dir\\src\\main.c.obj -c C:\\dev\\Cosine-Win\\src\\main.c",
+  "file": "C:\\dev\\Cosine-Win\\src\\main.c",
+  "output": "CMakeFiles\\Cosine.dir\\src\\main.c.obj"
+},
+{
+  "directory": "C:/dev/Cosine-Win/build",
+  "command": "C:\\Users\\danch\\scoop\\apps\\mingw-winlibs-llvm-msvcrt\\current\\bin\\gcc.exe -IC:/dev/Cosine-Win/include -o CMakeFiles\\Cosine.dir\\src\\processInput.c.obj -c C:\\dev\\Cosine-Win\\src\\processInput.c",
+  "file": "C:\\dev\\Cosine-Win\\src\\processInput.c",
+  "output": "CMakeFiles\\Cosine.dir\\src\\processInput.c.obj"
+}
+]
