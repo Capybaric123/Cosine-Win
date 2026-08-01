@@ -22,7 +22,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
     "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\n\0";
 
-int main()
+int main(void)
 {
 
     log_trace("Logger initialized successfully!");
@@ -134,10 +134,12 @@ int main()
         glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        keyboard_update();
+
         if (keyboard.keys[GLFW_KEY_ESCAPE].down == true) {
             glfwSetWindowShouldClose(window, true);
         }
-        if (keyboard.keys[GLFW_KEY_BACKSLASH].down == true) {
+        if (keyboard.keys[GLFW_KEY_BACKSLASH].pressed == true) {
             state.wireframe = !state.wireframe;
         }
         switch (state.wireframe) {

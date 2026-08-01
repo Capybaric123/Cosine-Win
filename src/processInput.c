@@ -2,6 +2,18 @@
 
 Keyboard keyboard;
 
+void keyboard_update(void)
+{
+    for (int i = 0; i <= GLFW_KEY_LAST; i++)
+    {
+        Button *b = &keyboard.keys[i];
+
+        b->pressed = b->down && !b->last;
+
+        b->last = b->down;
+    }
+}
+
 void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key < 0) {

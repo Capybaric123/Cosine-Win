@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 project(Cosine-Win)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+set(CMAKE_C_STANDARD 99)
 
 file(GLOB SRC CONFIGURE_DEPENDS
         ${CMAKE_SOURCE_DIR}/src/*.c
