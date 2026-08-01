@@ -8,6 +8,8 @@
 
 struct State state;
 
+// Shader source code
+// TODO: move them
 const char *vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
@@ -25,13 +27,16 @@ const char *fragmentShaderSource = "#version 330 core\n"
 int main(void)
 {
 
+    // Initialize logger
     log_trace("Logger initialized successfully!");
 
+    // Initialize GLFW
     if(!glfwInit())
     {
         log_error("Failed to initialize GLFW!");
         return -1;
     }
+    // Set window hints
     log_trace("GLFW initialized successfully!");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -39,33 +44,41 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     log_trace("Set GLFW openGL profile!");
 
+    // Create the window
     GLFWwindow* window = glfwCreateWindow(640, 480, "Cosine", NULL, NULL);
+    // Check for errors during creation
     if(window == NULL)
     {
         log_error("Failed to create GLFW window!");
         glfwTerminate();
         return -1;
     }
+    // Set OpenGL window context
     log_trace("Successfully created GLFW window!");
     glfwMakeContextCurrent(window);
     log_trace("Set openGL window context!");
 
+    // Load GLAD and print out the OpenGL version
     int version = gladLoadGL(glfwGetProcAddress);
+    // Check for errors during initialization
     if(version == 0)
     {
         log_error("Failed to initialize GLAD!");
         glfwTerminate();
         return -1;
     }
+    // Log the OpenGL version
     log_info("Loaded OpenGL %d.%d",
              GLAD_VERSION_MAJOR(version),
              GLAD_VERSION_MINOR(version));
 
+    // Compile the vertex shader
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
+    // Simple logger to output any compile errors
     int success;
     char infoLog[512];
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
@@ -75,11 +88,13 @@ int main(void)
         log_error("ERROR::SHADER::VERTEX::COMPILATION_FILED\n%s", infoLog);
     }
 
+    // Compile the fragment shader
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
+    // Check for any compile errors with the fragment shader
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if(!success)
     {
@@ -87,13 +102,16 @@ int main(void)
         log_error("ERROR:SHADER::FRAGMENT:COMPILATION_FAILED\n%s", infoLog);
     }
 
+    // Create a shader program
     unsigned int shaderProgram;
     shaderProgram = glCreateProgram();
 
+    // Attach shaders and link the program
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
 
+    // Check for any linking errors
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if(!success)
     {
@@ -101,6 +119,7 @@ int main(void)
         log_error("ERROR::SHADER::PROGRAM:LINKING_FAILED\n%s", infoLog);
     }
 
+    // List of vertices for the rectangle
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
@@ -110,38 +129,50 @@ int main(void)
         0.5f, -0.5f, 0.0f
     };
 
+    // Create the VAO and the VBO
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
+    // Bind the VAO before the VBO
     glBindVertexArray(VAO);
 
+    // Bind the VBO and set its data
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // Set the vertex attribute pointer
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    // Bind the vertex buffer (VBO)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    // Set the initial window size OpenGL viewport
     glViewport(0, 0, 640, 480);
 
+    // Set the framebuffer and the key callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, _key_callback);
 
+    // Main loop aka. runtime
     while(!glfwWindowShouldClose(window))
     {
+        // Clear the window with a nice colour
         glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Make the keyboard.key.pressed work
         keyboard_update();
 
+        // Input checks and everything else
         if (keyboard.keys[GLFW_KEY_ESCAPE].down == true) {
             glfwSetWindowShouldClose(window, true);
         }
-        if (keyboard.keys[GLFW_KEY_BACKSLASH].pressed == true) {
+        if (keyboard.keys[GLFW_KEY_F3].pressed == true) {
             state.wireframe = !state.wireframe;
         }
+        // Wireframe mode :3
         switch (state.wireframe) {
             case true:
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -153,15 +184,21 @@ int main(void)
                 break;
         }
 
+        // Use the program and bind the VAO
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
+        // Draw call
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
+        // Make the window not show up as not responding
         glfwPollEvents();
+        // Swap the double buffers
         glfwSwapBuffers(window);
     }
 
+    // Destroy the window on exit
     glfwDestroyWindow(window);
+    // Terminate GLFW on exit
     glfwTerminate();
 
     return 0;
