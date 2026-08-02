@@ -7,6 +7,9 @@
 #include "state.h"
 #include "util/types.h"
 
+#define WIDTH 640
+#define HEIGHT 480
+
 struct State state;
 
 // Shader source code
@@ -39,8 +42,12 @@ int main(void)
         log_error("Failed to initialize GLFW!");
         return -1;
     }
-    // Set window hints
     log_trace("GLFW initialized successfully!");
+    int major, minor, rev;
+    glfwGetVersion(&major, &minor, &rev);
+    log_info("GLFW version: %d.%d %d", major, minor, rev);
+    // Set window hints
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     log_trace("Set GLFW version context!");
@@ -48,7 +55,7 @@ int main(void)
     log_trace("Set GLFW openGL profile!");
 
     // Create the window
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Cosine", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Cosine Engine", NULL, NULL);
     // Check for errors during creation
     if(window == NULL)
     {
@@ -186,6 +193,7 @@ int main(void)
         // Input checks and everything else
         if (keyboard.keys[GLFW_KEY_ESCAPE].down == true) {
             glfwSetWindowShouldClose(window, true);
+            log_info("Shutdown call processed");
         }
         if (keyboard.keys[GLFW_KEY_F3].pressed == true) {
             state.wireframe = !state.wireframe;
