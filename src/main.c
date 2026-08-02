@@ -1,13 +1,22 @@
+// External libraries
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
-#include "util/log.h"
+// Renderer libraries
 #include "gfx/sizecallback.h"
-#include "input.h"
-#include "state.h"
+#include "gfx/vao.h"
+#include "gfx/vbo.h"
+
+// Utility libaries
+#include "util/log.h"
 #include "util/types.h"
 #include "util/displayinfo.h"
 
+// Main libraries
+#include "input.h"
+#include "state.h"
+
+// Define the initial window width and height
 #define WIDTH 640
 #define HEIGHT 480
 
@@ -149,32 +158,18 @@ int main(void)
 
     // Create the VAO and the VBO
     GLuint VBO, VAO, IBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &IBO);
+    struct VAO vao = vao_create();
+    struct VBO vbo = vbo_create(GL_ARRAY_BUFFER, true);
+    struct VBO ibo = vbo_create(GL_ELEMENT_ARRAY_BUFFER, true);
 
-    // Bind the VAO before the VBO
-    glBindVertexArray(VAO);
+    vbo_buffer(vbo, vertices, 0, vertices);
 
-    // Bind the VBO and set its data
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    vbo_buffer(ibo, indices, 0, indices);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    vao_attr(vao, vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), 0);
 
-    // Set the vertex attribute pointer
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Bind the vertex buffer (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // Bind the VAO
-    glBindVertexArray(0);
-
-    // Bind the IBO
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    vao_bind(vao);
+    vbo_bind(ibo);
 
     // Set the initial window size OpenGL viewport
     glViewport(0, 0, 640, 480);
@@ -209,7 +204,7 @@ int main(void)
 
         // Use the program and bind the VAO
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+        vao_bind(vao);
 
         // Draw call
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
