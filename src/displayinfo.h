@@ -4,6 +4,6 @@
 #include <GLFW/glfw3.h>
 #include "log.h"
 
-void displayinfo(void);
+void _display_info(void);
 
 #endif

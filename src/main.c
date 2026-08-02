@@ -63,7 +63,7 @@ int main(void)
     }
 
     // Log GLFW display info
-    displayinfo();
+    _display_info();
 
     // Set OpenGL window context
     log_trace("Successfully created GLFW window!");
@@ -115,7 +115,7 @@ int main(void)
     }
 
     // Create a shader program
-    unsigned int shaderProgram;
+    u32 shaderProgram;
     shaderProgram = glCreateProgram();
 
     // Attach shaders and link the program
@@ -139,10 +139,13 @@ int main(void)
         -0.5f,  0.5f, 0.0f   // top left
     };
 
+    // List of indices for the rectangle
     static u32 indices[] = {
         0, 1, 3,
         1, 2, 3
     };
+
+    // TODO: move to separate files
 
     // Create the VAO and the VBO
     GLuint VBO, VAO, IBO;
@@ -217,9 +220,13 @@ int main(void)
         glfwSwapBuffers(window);
     }
 
+    // Cleanup buffers
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &IBO);
+
+    // Cleanup the shader program
+    glDeleteProgram(shaderProgram);
 
     // Destroy the window on exit
     glfwDestroyWindow(window);
