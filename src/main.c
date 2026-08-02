@@ -1,12 +1,12 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
-#include "log.h"
+#include "util/log.h"
 #include "sizecallback.h"
 #include "input.h"
 #include "state.h"
 #include "util/types.h"
-#include "displayinfo.h"
+#include "util/displayinfo.h"
 
 #define WIDTH 640
 #define HEIGHT 480
