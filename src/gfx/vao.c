@@ -18,8 +18,7 @@ void vao_bind(struct VAO self)
 
 void vao_attr(
     struct VAO self, struct VBO vbo, GLuint index, GLint size, GLenum type,
-    GLsizei stride, size_t offset
-)
+    GLsizei stride, size_t offset)
 {
     vao_bind(self);
     vbo_bind(vbo);
@@ -37,10 +36,10 @@ void vao_attr(
         case GL_UNSIGNED_INT:
         case GL_INT_2_10_10_10_REV:
         case GL_UNSIGNED_INT_2_10_10_10_REV:
-            glVertexAttribIPointer(index, size, type, stride, (void *) offset);
+            glVertexAttribIPointer(index, size, type, stride, (void *)offset);
             break;
         default:
-            glVertexAttribPointer(index, size, type, GL_FALSE, stride, (void *) offset);
+            glVertexAttribPointer(index, size, type, GL_FALSE, stride, (void *)offset);
             break;
     }
 }

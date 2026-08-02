@@ -60,6 +60,7 @@ int main(void)
     log_trace("Set GLFW version context!");
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     log_trace("Set GLFW openGL profile!");
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
     // Create the window
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Cosine Engine", NULL, NULL);
@@ -154,25 +155,23 @@ int main(void)
         1, 2, 3
     };
 
-    // TODO: move to separate files
-
-    // Create the VAO and the VBO
-    GLuint VBO, VAO, IBO;
+    // Create the VAO, VBO, and the IBO
     struct VAO vao = vao_create();
-    struct VBO vbo = vbo_create(GL_ARRAY_BUFFER, true);
-    struct VBO ibo = vbo_create(GL_ELEMENT_ARRAY_BUFFER, true);
+    struct VBO vbo = vbo_create(GL_ARRAY_BUFFER, false);
+    struct VBO ibo = vbo_create(GL_ELEMENT_ARRAY_BUFFER, false);
 
-    vbo_buffer(vbo, vertices, 0, vertices);
+    vbo_buffer(vbo, vertices, 0, (4 * 3) * sizeof(f32));
 
-    vbo_buffer(ibo, indices, 0, indices);
+    vbo_buffer(ibo, indices, 0, 6 * sizeof(u32));
 
-    vao_attr(vao, vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), 0);
+    vao_attr(vao, vbo, 0, 3, GL_FLOAT, 0, 0);
+    // glEnableVertexAttribArray(0);
 
+    // vbo_bind(ibo);
     vao_bind(vao);
-    vbo_bind(ibo);
 
     // Set the initial window size OpenGL viewport
-    glViewport(0, 0, 640, 480);
+    glViewport(0, 0, WIDTH, HEIGHT);
 
     // Set the framebuffer and the key callbacks
     glfwSetFramebufferSizeCallback(window, _size_callback);
@@ -215,10 +214,10 @@ int main(void)
         glfwSwapBuffers(window);
     }
 
-    // Cleanup buffers
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &IBO);
+    // Delete the buffers
+    vao_destroy(vao);
+    vbo_destroy(vbo);
+    vbo_destroy(ibo);
 
     // Cleanup the shader program
     glDeleteProgram(shaderProgram);
