@@ -189,6 +189,7 @@ int main(void)
         }
         if (keyboard.keys[GLFW_KEY_F3].pressed == true) {
             state.wireframe = !state.wireframe;
+            log_info("Wireframe mode set to: %s", state.wireframe ? "on" : "off");
         }
         // Wireframe mode :3
         _wireframe_mode(state.wireframe);
@@ -218,6 +219,7 @@ int main(void)
     return 0;
 }
 
+// Over-engineered toggle function
 void _wireframe_mode(bool enabled) {
     if (enabled) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
