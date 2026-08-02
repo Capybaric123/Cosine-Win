@@ -43,9 +43,6 @@ int main(void)
         return -1;
     }
     log_trace("GLFW initialized successfully!");
-    int major, minor, rev;
-    glfwGetVersion(&major, &minor, &rev);
-    log_info("GLFW version: %d.%d %d", major, minor, rev);
     // Set window hints
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -63,6 +60,17 @@ int main(void)
         glfwTerminate();
         return -1;
     }
+
+    int major, minor, rev;
+    glfwGetVersion(&major, &minor, &rev);
+    log_info("GLFW version: %d.%d.%d", major, minor, rev);
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const char* name = glfwGetMonitorName(monitor);
+    log_info("Monitor: %s", name);
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    log_info("Resolution: %dx%d @ %dHz", mode->width, mode->height, mode->refreshRate);
+    log_info("RGB bits: %d, %d, %d", mode->redBits, mode->greenBits, mode->blueBits);
+
     // Set OpenGL window context
     log_trace("Successfully created GLFW window!");
     glfwMakeContextCurrent(window);
