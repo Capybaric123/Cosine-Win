@@ -5,7 +5,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "log.h"
+#include "util/log.h"
 
 // Button states and struct
 typedef struct Button {
