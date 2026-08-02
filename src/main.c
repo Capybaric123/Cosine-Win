@@ -6,6 +6,7 @@
 #include "input.h"
 #include "state.h"
 #include "util/types.h"
+#include "displayinfo.h"
 
 #define WIDTH 640
 #define HEIGHT 480
@@ -61,15 +62,8 @@ int main(void)
         return -1;
     }
 
-    int major, minor, rev;
-    glfwGetVersion(&major, &minor, &rev);
-    log_info("GLFW version: %d.%d.%d", major, minor, rev);
-    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-    const char* name = glfwGetMonitorName(monitor);
-    log_info("Monitor: %s", name);
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    log_info("Resolution: %dx%d @ %dHz", mode->width, mode->height, mode->refreshRate);
-    log_info("RGB bits: %d, %d, %d", mode->redBits, mode->greenBits, mode->blueBits);
+    // Log GLFW display info
+    displayinfo();
 
     // Set OpenGL window context
     log_trace("Successfully created GLFW window!");
@@ -139,8 +133,8 @@ int main(void)
 
     // List of vertices for the rectangle
     static f32 vertices[] = {
-        0.5f,  0.5f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f,  // bottom right
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f,  // bottom left
         -0.5f,  0.5f, 0.0f   // top left
     };
@@ -151,10 +145,10 @@ int main(void)
     };
 
     // Create the VAO and the VBO
-    GLuint VBO, VAO, EBO;
+    GLuint VBO, VAO, IBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    glGenBuffers(1, &IBO);
 
     // Bind the VAO before the VBO
     glBindVertexArray(VAO);
@@ -163,7 +157,7 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Set the vertex attribute pointer
@@ -225,7 +219,7 @@ int main(void)
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &IBO);
 
     // Destroy the window on exit
     glfwDestroyWindow(window);
