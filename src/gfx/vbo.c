@@ -23,5 +23,5 @@ void vbo_bind(struct VBO self)
 void vbo_buffer(struct VBO self, void *data, size_t offset, size_t count)
 {
     vbo_bind(self);
-    glBufferData(self.type, count - offset, data, self.dynamic ? "GL_DYNAMIC_DRAW" : "GL_STATIC DRAW");
+    glBufferData(self.type, count - offset, data, self.dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }

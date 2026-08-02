@@ -8,6 +8,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall -Wextra -DLOG_USE_COLOR")
 
 file(GLOB SRC CONFIGURE_DEPENDS
         ${CMAKE_SOURCE_DIR}/src/*.c
+        ${CMAKE_SOURCE_DIR}/src/util/*.c
+        ${CMAKE_SOURCE_DIR}/src/gfx/*.c
 )
 
 add_executable(Cosine ${SRC})

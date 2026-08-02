@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include "util/log.h"
-#include "sizecallback.h"
+#include "gfx/sizecallback.h"
 #include "input.h"
 #include "state.h"
 #include "util/types.h"
